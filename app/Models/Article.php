@@ -19,6 +19,12 @@ class Article extends Model
         'title',
         'content',
         'category_id',
+        'tags',
+    ];
+
+    
+    protected $casts = [
+        'tags' => 'array',
     ];
 
     /**

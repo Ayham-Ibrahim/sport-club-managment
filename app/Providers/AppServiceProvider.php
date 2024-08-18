@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Routing\Router;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 class AppServiceProvider extends ServiceProvider
 {
     /**

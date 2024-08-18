@@ -3,9 +3,13 @@
 namespace App\Http\Requests\Article;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Traits\ApiResponseTrait;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateArticleRequest extends FormRequest
 {
+    use ApiResponseTrait;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -22,7 +26,22 @@ class UpdateArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title'  => 'nullable|string|min:2',
+            'content'  => 'nullable|string|min:2',
+            'category_id'  => ['nullable','integer','exists:categories,id','min:1'],
+            'tags' => 'nullable|array',
+            'tag.*' => 'srting|min:2',
         ];
+    }
+
+        /**
+     *  method handles failure of Validation and return message
+     * @param \Illuminate\Contracts\Validation\Validator $Validator
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     * @return never
+     */
+    protected function failedValidation(Validator $Validator){
+        $errors = $Validator->errors()->all();
+        throw new HttpResponseException($this->errorResponse($errors,'Validation error',422));
     }
 }

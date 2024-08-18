@@ -36,7 +36,7 @@
         <div class="row gx-0">
             <div class="col-lg-3 bg-dark d-none d-lg-block">
                 <a href="index.html" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
-                    <h1 class="m-0 display-4 text-primary text-uppercase">Gymster</h1>
+                    <h1 class="m-0 display-4 text-primary text-uppercase">SportClup</h1>
                 </a>
             </div>
             <div class="col-lg-9">
@@ -73,7 +73,7 @@
                 </div>
                 <nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 p-lg-0 px-lg-5">
                     <a href="index.html" class="navbar-brand d-block d-lg-none">
-                        <h1 class="m-0 display-4 text-primary text-uppercase">Gymster</h1>
+                        <h1 class="m-0 display-4 text-primary text-uppercase">SportClup</h1>
                     </a>
                     <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="navbar-toggler-icon"></span>
@@ -119,7 +119,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="w-100" src={{ asset('/build/img/carousel-1.jpg')}} alt="Image">
+                    <img class="w-100" src={{ asset('/build/img/R.jpg')}} alt="Image">
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
                             <h5 class="text-white text-uppercase">Best Gym Center</h5>

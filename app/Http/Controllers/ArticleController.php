@@ -2,30 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ArticleResource;
-use App\Http\Traits\ApiResponseTrait;
 use Exception;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Http\Traits\ApiResponseTrait;
+use App\Http\Resources\ArticleResource;
 use App\Http\Requests\Article\StoreArticleRequest;
 use App\Http\Requests\Article\UpdateArticleRequest;
+use Spatie\Permission\Exceptions\UnauthorizedException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ArticleController extends Controller
 {
+
     use ApiResponseTrait;
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        try {
-            $articles = Article::orderBy("created_at","desc")->paginate(10);
-            return $this->resourcePaginated(ArticleResource::collection($articles), 'Done', 200); 
-        } catch (Exception $e) {
-            Log::error('Error listing articles: ' . $e->getMessage());
-            throw new Exception($this->errorResponse(null,'there is something wrong in server',500));
+    public function index(Request $request)
+    { 
+    try {
+    
+        $query = Article::query();
+        // If a category_id is provided, filter the articles by category
+        if ($request->input('category_id')) {
+            $query->where('category_id', $request->input('category_id'));
         }
+        // Paginate the results
+        $articles = $query->paginate(10);
+        // Return the paginated results using your ApiResponseTrait
+        return $this->resourcePaginated(ArticleResource::collection($articles), 'Done', 200); 
+    } catch (Exception $e) {
+        Log::error('Error listing articles: ' . $e->getMessage());
+        throw new Exception($this->errorResponse(null, 'There is something wrong in the server', 500));
+    }
     }
 
     /**
@@ -35,7 +46,7 @@ class ArticleController extends Controller
     {
         try {
             $article = Article::create($request->validated());
-            return $this->resourcePaginated(new ArticleResource($article), 'stored successfully', 200); 
+            return $this->successResponse(new ArticleResource($article), 'stored successfully', 200); 
         } catch (Exception $e) {
             Log::error('Error storing article: ' . $e->getMessage());
             throw new Exception($this->errorResponse(null,'there is something wrong in server',500));
@@ -48,7 +59,7 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         try {
-            return $this->resourcePaginated(new ArticleResource($article), 'Done', 200); 
+            return $this->successResponse(new ArticleResource($article), 'Done', 200); 
         } catch (Exception $e) {
             Log::error('Error showinging article: ' . $e->getMessage());
             throw new Exception($this->errorResponse(null,'there is something wrong in server',500));
@@ -63,7 +74,7 @@ class ArticleController extends Controller
         try {
             $data = $request->validated();
             $article->update(array_filter($data));
-            return $this->resourcePaginated(new ArticleResource($article), 'updated successfully', 200); 
+            return $this->successResponse(new ArticleResource($article), 'updated successfully', 200); 
         } catch (Exception $e) {
             Log::error('Error updating article: ' . $e->getMessage());
             throw new Exception($this->errorResponse(null,'there is something wrong in server',500));
@@ -77,7 +88,7 @@ class ArticleController extends Controller
     {
         try {
             $article->delete();
-            return $this->resourcePaginated(null, 'Deleted sucessfully', 200); 
+            return $this->successResponse(null, 'Deleted sucessfully', 200); 
         } catch (Exception $e) {
             Log::error('Error deleting article: ' . $e->getMessage());
             throw new Exception($this->errorResponse(null,'there is something wrong in server',500));
