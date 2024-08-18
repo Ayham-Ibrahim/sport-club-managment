@@ -15,6 +15,7 @@ class AuthService
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+        $user->assignRole('employee');
         $token = $user->createToken('authToken')->plainTextToken;
         return [
             'status' => 'success',

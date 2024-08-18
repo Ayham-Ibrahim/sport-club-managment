@@ -8,6 +8,7 @@ use App\Models\Sport;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Traits\ApiResponseTrait;
 
 
@@ -38,6 +39,16 @@ class SubscriptionService {
                 'start_date' => $startDate,
                 'end_date' => $endDate,
             ]);
+
+
+            // prepare message for email
+            $data['email'] = $subscription->email;
+            $data['body']  = "أهلا بكم في نادينا ... نرجو منكم اجراء عملية الدفع حتى بتفعل اشتراككم";
+             // send mail to user
+            Mail::send('emails.notification', ['data' => $data], function ($message) use ($data) {
+                $message->to($data['email'])->subject($data['body']);
+            });
+
             DB::commit();
             return $subscription;
         } catch (\Exception $e) {
