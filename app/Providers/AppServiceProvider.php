@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Payment;
+use App\Observers\PaymentObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
 use Spatie\Permission\Middleware\PermissionMiddleware;
@@ -20,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Payment::observe(new PaymentObserver());
     }
 }
