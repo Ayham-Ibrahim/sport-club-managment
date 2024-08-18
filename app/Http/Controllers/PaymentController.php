@@ -29,7 +29,7 @@ class PaymentController extends Controller
             $query->whereBetween('payment_date', [$request->date_from, $request->date_to]);
         }
         $payments = $query->get();
-        return response()->json($payments, 200);
+        return $this->successResponse(PaymentResource::collection($payments),'payments listed successfully',200);
     }
 
     /**
