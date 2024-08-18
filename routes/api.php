@@ -147,7 +147,7 @@ Route::prefix('v1')->group(function () {
         // manage subscription operation (renew , suspend,delete)
         Route::post('renew-subscription/{subscription}',[SubscriptionController::class,'renew']);
         Route::post('suspend-subscription/{subscription}',[SubscriptionController::class,'suspend']);
-        Route::post('delete-subscription/{subscription}',[SubscriptionController::class,'destroy']);
+        Route::delete('delete-subscription/{subscription}',[SubscriptionController::class,'destroy']);
     });
 });
 
